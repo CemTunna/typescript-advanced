@@ -2,7 +2,7 @@
 //interces can only be used to structure object, type cant be used
 //interfaces has no implemention whereas abstract classes might have
 interface Human {
-  age: number;
+  age?: number; // optional property , it might exist
   name: string;
   sayHi(msg: string): void;
 }
