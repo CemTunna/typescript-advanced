@@ -21,11 +21,19 @@ class ITDepartment extends Department {
   }
 }
 class AccountingDepartment extends Department {
+  private lastReport: string | null = null;
   constructor(id: string, private reports: string[]) {
     super(id, 'Accounting');
   }
+  get mostRecent() {
+    return this.lastReport ? this.lastReport : console.log('no report found');
+  }
+  set mostRecent(val) {
+    val && this.addReport(val);
+  }
   addReport = (text: string) => {
     this.reports.push(text);
+    this.lastReport = text;
   };
   getReports = () => {
     console.log(this.reports);
@@ -45,4 +53,5 @@ acc.addReport('Some random report');
 acc.getReports();
 acc.addEmployee('doe');
 acc.printEmployee();
-console.log(acc);
+acc.mostRecent = 'setting method used';
+console.log(acc.mostRecent);
