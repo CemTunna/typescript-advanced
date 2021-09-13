@@ -2,7 +2,7 @@ class Department {
   protected /*readonly*/ employees: string[] = [];
   //readonly allows you to just read
   // protected makes it accesible from other classes which  inherits Department
-  constructor(private id: string, private name: string) {}
+  constructor(protected id: string, private name: string) {}
   printDepartment() {
     console.log(`Department (${this.id}): ${this.name}`);
   }
@@ -13,6 +13,9 @@ class Department {
     console.log(this.employees.length);
     console.log(this.employees);
   };
+  static employeeCreator(name: string) {
+    return { name };
+  }
 }
 class ITDepartment extends Department {
   constructor(id: string, public admins: string[]) {
@@ -22,7 +25,9 @@ class ITDepartment extends Department {
 }
 class AccountingDepartment extends Department {
   private lastReport: string | null = null;
-  constructor(id: string, private reports: string[]) {
+  private static ins: AccountingDepartment;
+  private constructor(id: string, private reports: string[]) {
+    //private keyword ensures that cant be instanciated
     super(id, 'Accounting');
   }
   get mostRecent() {
@@ -30,6 +35,9 @@ class AccountingDepartment extends Department {
   }
   set mostRecent(val) {
     val && this.addReport(val);
+  }
+  static startInstance() {
+    return (this.ins = new AccountingDepartment('d4', []));
   }
   addReport = (text: string) => {
     this.reports.push(text);
@@ -42,16 +50,19 @@ class AccountingDepartment extends Department {
     if (name === 'John') return;
     this.employees.push(name);
   };
+  desc() {
+    console.log('Accolunting department -ID: ', +this.id);
+  }
 }
 const it = new ITDepartment('id1', ['john']);
 
 it.addEmployee('John');
 it.addEmployee('Doe');
+const emp1 = Department.employeeCreator('Mary');
+console.log(emp1);
+// const acc = new AccountingDepartment('id2', []);
 
-const acc = new AccountingDepartment('id2', []);
-acc.addReport('Some random report');
-acc.getReports();
-acc.addEmployee('doe');
-acc.printEmployee();
-acc.mostRecent = 'setting method used';
-console.log(acc.mostRecent);
+// acc.mostRecent = 'setting method used'; // using set method, like a variable
+// console.log(acc.mostRecent); // calling get method like a variable without '()'
+const acc = AccountingDepartment.startInstance(); // sinletons
+console.log(acc);
