@@ -10,3 +10,8 @@ interface Desc {
 function printt<T extends Desc>(value: T) {
   return value.length > 1 && 'Got ' + value.length + ' elements.';
 }
+function objFunc<T extends object, U extends keyof T>(obj: T, key: U) {
+  // 'keyof' make sures U within object
+  return obj[key];
+}
+objFunc({ name: 'Max' }, 'name');
