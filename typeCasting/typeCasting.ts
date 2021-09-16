@@ -11,3 +11,11 @@ interface Errorr {
 const error: Errorr = {
   email: 'not a valid email',
 };
+const fetchedData = {
+  nameAndSurname: {
+    name: 'John',
+    surname: 'Doe',
+  },
+  age: 20,
+};
+console.log(fetchedData.nameAndSurname?.name); //optional chaining, checks whether nameAndSurname exist or not
